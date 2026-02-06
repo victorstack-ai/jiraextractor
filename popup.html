@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,15 +12,18 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       margin: 0;
     }
+
     .header {
       text-align: center;
       margin-bottom: 20px;
     }
+
     .header h1 {
       margin: 0;
       font-size: 18px;
       color: #0052CC;
     }
+
     .button {
       width: 100%;
       padding: 12px;
@@ -32,16 +36,20 @@
       cursor: pointer;
       transition: background-color 0.2s;
     }
+
     .button:hover {
       background-color: #0065FF;
     }
+
     .button:active {
       background-color: #0040A0;
     }
+
     .button:disabled {
       background-color: #ccc;
       cursor: not-allowed;
     }
+
     .status {
       margin-top: 15px;
       padding: 10px;
@@ -50,21 +58,25 @@
       text-align: center;
       display: none;
     }
+
     .status.success {
       background-color: #E3FCEF;
       color: #006644;
       display: block;
     }
+
     .status.error {
       background-color: #FFEBE6;
       color: #BF2600;
       display: block;
     }
+
     .status.info {
       background-color: #DEEBFF;
       color: #0052CC;
       display: block;
     }
+
     .info-text {
       font-size: 12px;
       color: #666;
@@ -73,6 +85,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="header">
     <h1>🎫 Jira Extractor</h1>
@@ -87,10 +100,16 @@
   </div>
   <div id="settingsView" style="display: none;">
     <h2 style="font-size: 16px; margin-bottom: 15px; color: #0052CC;">API Settings</h2>
+    <label style="display: block; font-size: 12px; margin-bottom: 5px; color: #666;">Jira Base URL:</label>
+    <input type="url" id="baseUrlInput" placeholder="https://your-domain.atlassian.net"
+      style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+
     <label style="display: block; font-size: 12px; margin-bottom: 5px; color: #666;">Email:</label>
-    <input type="email" id="emailInput" placeholder="your-email@example.com" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+    <input type="email" id="emailInput" placeholder="your-email@example.com"
+      style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
     <label style="display: block; font-size: 12px; margin-bottom: 5px; color: #666;">API Token:</label>
-    <input type="password" id="tokenInput" placeholder="Enter your Jira API token" style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+    <input type="password" id="tokenInput" placeholder="Enter your Jira API token"
+      style="width: 100%; padding: 8px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
     <div style="display: flex; gap: 10px;">
       <button id="saveSettingsBtn" class="button" style="flex: 1;">Save</button>
       <button id="testCredentialsBtn" class="button" style="flex: 1; background-color: #059669;">Test</button>
@@ -98,10 +117,11 @@
     </div>
     <div id="settingsStatus" class="status" style="margin-top: 15px;"></div>
     <div class="info-text" style="margin-top: 15px; font-size: 11px;">
-      <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank" style="color: #0052CC;">Get your API token</a>
+      <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank" style="color: #0052CC;">Get
+        your API token</a>
     </div>
   </div>
   <script src="popup.js"></script>
 </body>
-</html>
 
+</html>
