@@ -27,6 +27,8 @@ zip -r "$OUTPUT_FILE" . \
     -x "*.DS_Store" \
     -x "README.md" \
     -x "CHECKLIST_EXTRACTION_ISSUE.md" \
+    -x "debug_*.py" \
+    -x "*.txt" \
     -x "node_modules/*"
 
 echo "Done! $OUTPUT_FILE created."

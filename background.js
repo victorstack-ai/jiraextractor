@@ -1,7 +1,39 @@
 // Background service worker for handling downloads
 const MAX_CHUNK_SIZE = 64 * 1024; // Keep streamed messages well under Chrome's message size limit
 
+// Set up declarativeNetRequest rules to strip Authorization header from media domains
+// This prevents CORS Preflight failures on S3 signed URLs which don't need auth but reject complex requests
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [1], // Clear any existing rule with this ID
+    addRules: [
+      {
+        id: 1,
+        priority: 1,
+        action: {
+          type: 'modifyHeaders',
+          requestHeaders: [
+            { header: 'Authorization', operation: 'remove' }
+          ]
+        },
+        condition: {
+          urlFilter: 'media.atlassian.com', // Substring match to catch api.media.atlassian.com, etc.
+          resourceTypes: ['xmlhttprequest', 'other']
+        }
+      }
+    ]
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('Failed to update dynamic rules:', chrome.runtime.lastError);
+    } else {
+      console.log('Dynamic rules updated: Authorization header will be stripped for *media.atlassian.com*');
+    }
+  });
+});
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('Background received message:', request.action);
+
   // Handle API credential testing
   if (request.action === 'testApiCredentials') {
     fetch(request.url, {
@@ -50,18 +82,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     if (request.headers) {
       fetchOptions.headers = request.headers;
+      console.log(`Downloading blob with custom headers from: ${request.url}`);
     } else {
       fetchOptions.credentials = 'include';
+      console.log(`Downloading blob with session credentials from: ${request.url}`);
     }
 
     fetch(request.url, fetchOptions)
       .then(response => {
         if (!response.ok) {
+          console.error(`Download failed: ${response.status} ${response.statusText}`);
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         return response.blob();
       })
       .then(blob => {
+        console.log(`Download successful. Blob size: ${blob.size}, type: ${blob.type}`);
         // Convert blob to base64 to send back
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -79,6 +115,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         reader.readAsDataURL(blob);
       })
       .catch(error => {
+        console.error('Download blob error:', error);
         sendResponse({ success: false, error: error.message });
       });
     return true; // Keep the message channel open for async response

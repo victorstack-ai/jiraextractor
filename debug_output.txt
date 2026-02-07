@@ -1,0 +1,4 @@
+Testing with Base URL: https://eastern-standard.atlassian.net
+Email: victorj@easternstandard.com
+Searching for issues: https://eastern-standard.atlassian.net/rest/api/3/search/jql
+No issues with attachments found in recent 5 issues.

@@ -1,0 +1,100 @@
+Auth Header Prefix: Basic dmljdG9ya...
+Testing with Base URL: https://eastern-standard.atlassian.net
+Email: victorj@easternstandard.com
+Checking identity: https://eastern-standard.atlassian.net/rest/api/3/myself
+Authenticated as: victorj@easternstandard.com (Victor Jimenez)
+Fetching issue: https://eastern-standard.atlassian.net/rest/api/3/issue/AUCWI-518
+Issue found: AUCWI-518
+Number of attachments found: 10
+Found issue: AUCWI-518
+Found attachment: 20260205-1537-55.6866262.mp4
+Content URL: https://eastern-standard.atlassian.net/rest/api/3/attachment/content/80851
+
+Attempting download with Authorization header...
+
+--- 302 Redirect Response Headers ---
+Content-Type: text/html;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: close
+Date: Sat, 07 Feb 2026 08:37:52 GMT
+Server: AtlassianEdge
+Timing-Allow-Origin: *
+X-Arequestid: 91e92c94fb4d976e6eb2007fb7e9cb80
+Set-Cookie: atlassian.xsrf.token=4e8d24ab0eea807fbbaa9f898a3984fba15c9d18_lin; Path=/; SameSite=None; Secure
+X-Aaccountid: 712020%3A6d5a06ea-95e9-4d1c-bdd6-814dea91aa9c
+Cache-Control: no-cache, no-store, no-transform
+X-Ratelimit-Limit: 300
+X-Ratelimit-Remaining: 299
+Location: https://api.media.atlassian.com/file/b82ad732-0cd9-4bdd-962d-d4a7e289ecc8/binary?token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlYmJlZmIyMi03Zjc4LTQxOGQtYmQ1Yy02MzEzYWJjNWFkNmYiLCJhY2Nlc3MiOnsidXJuOmZpbGVzdG9yZTpmaWxlOmI4MmFkNzMyLTBjZDktNGJkZC05NjJkLWQ0YTdlMjg5ZWNjOCI6WyJyZWFkIl19LCJleHAiOjE3NzA0NTQwNzIsIm5iZiI6MTc3MDQ1MzQ3Mn0.oF_klFQjO5Ac72GroxxyJO5woV3kNqMvOjGcVqV-584&client=ebbefb22-7f78-418d-bd5c-6313abc5ad6f&name=20260205-1537-55.6866262.mp4
+Vary: Accept-Encoding
+X-Content-Type-Options: nosniff
+X-Xss-Protection: 1; mode=block
+Atl-Traceid: bd42a02c544448ceab309519b172f678
+Atl-Request-Id: bd42a02c-5444-48ce-ab30-9519b172f678
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+Report-To: {"endpoints": [{"url": "https://dz8aopenkvv6s.cloudfront.net"}], "group": "endpoint-1", "include_subdomains": true, "max_age": 600}
+Nel: {"failure_fraction": 0.01, "include_subdomains": true, "max_age": 600, "report_to": "endpoint-1"}
+X-Cache: Miss from cloudfront
+Via: 1.1 8039727371e52206916808ebd0333dec.cloudfront.net (CloudFront)
+X-Amz-Cf-Pop: BOG51-P3
+X-Amz-Cf-Id: wuT0mm-QUktv0VdO29C-8HHW9rjenU0ZGQW8Btw2Guu0Umr4mOIL7A==
+Server-Timing: cdn-upstream-layer;desc="EDGE",cdn-upstream-dns;dur=0,cdn-upstream-connect;dur=0,cdn-upstream-fbl;dur=195,atl-edge;dur=126,atl-edge-internal;dur=25,atl-edge-upstream;dur=102,atl-edge-pop;desc="aws-us-east-1",cdn-cache-miss,cdn-pop;desc="BOG51-P3",cdn-rid;desc="wuT0mm-QUktv0VdO29C-8HHW9rjenU0ZGQW8Btw2Guu0Umr4mOIL7A==",cdn-downstream-fbl;dur=200
+-------------------------------------
+Got Redirect URL: https://api.media.atlassian.com/file/b82ad732-0cd9...
+
+Verifying download from S3...
+Testing CORS Preflight (OPTIONS) with Authorization header...
+S3 Preflight Status: 204
+S3 Headers for OPTIONS:
+Date: Sat, 07 Feb 2026 08:37:52 GMT
+Server: AtlassianEdge
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, HEAD, PUT, PATCH, POST, DELETE
+Access-Control-Allow-Headers: authorization
+Access-Control-Max-Age: 600
+X-Content-Type-Options: nosniff
+X-Xss-Protection: 1; mode=block
+Atl-Traceid: e0d39af47258427ea486dbec4af4cee0
+Atl-Request-Id: e0d39af4-7258-427e-a486-dbec4af4cee0
+Strict-Transport-Security: max-age=63072000; preload
+Report-To: {"endpoints": [{"url": "https://dz8aopenkvv6s.cloudfront.net"}], "group": "endpoint-1", "include_subdomains": true, "max_age": 600}
+Nel: {"failure_fraction": 0.01, "include_subdomains": true, "max_age": 600, "report_to": "endpoint-1"}
+Vary: Accept-Encoding
+Server-Timing: atl-edge;dur=6,atl-edge-internal;dur=3,atl-edge-upstream;dur=1,atl-edge-pop;desc="aws-us-east-1"
+Connection: close
+S3 Download Status: 200
+
+--- S3 Response Headers ---
+Date: Sat, 07 Feb 2026 08:37:53 GMT
+Content-Type: video/mp4
+Content-Length: 9258053
+Server: AtlassianEdge
+X-B3-Traceid: 5496aa621ca44027b9ac4d26062a630c
+X-B3-Spanid: 028a1a3270e9f2ce
+X-B3-Parentspanid: 397413de85eb92c0
+X-B3-Sampled: 0
+X-Dns-Prefetch-Control: off
+X-Frame-Options: SAMEORIGIN
+X-Download-Options: noopen
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: Accept-Ranges, Content-Encoding, Content-Length, Content-Range, X-Media-Region, X-Media-Env
+X-Media-Region: us-east-1
+X-Media-Env: prod-east
+Content-Security-Policy: default-src 'self';script-src 'none'
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: no-referrer
+Cache-Control: private
+Timing-Allow-Origin: *
+Content-Disposition: attachment; filename="20260205-1537-55.6866262.mp4"
+Accept-Ranges: bytes
+X-Content-Type-Options: nosniff
+X-Xss-Protection: 1; mode=block
+Atl-Traceid: 5496aa621ca44027b9ac4d26062a630c
+Atl-Request-Id: 5496aa62-1ca4-4027-b9ac-4d26062a630c
+Strict-Transport-Security: max-age=63072000; preload
+Report-To: {"endpoints": [{"url": "https://dz8aopenkvv6s.cloudfront.net"}], "group": "endpoint-1", "include_subdomains": true, "max_age": 600}
+Nel: {"failure_fraction": 0.01, "include_subdomains": true, "max_age": 600, "report_to": "endpoint-1"}
+Baggage: atl-paas-enc-byok=false
+Server-Timing: atl-edge;dur=229,atl-edge-internal;dur=7,atl-edge-upstream;dur=224,atl-edge-pop;desc="aws-us-east-1"
+Connection: close
+---------------------------

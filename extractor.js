@@ -1857,8 +1857,8 @@
 
           if (!downloadResult) continue;
 
-          const result = downloadResult;
-          if (result) {
+          const finalDownloadResult = downloadResult;
+          if (finalDownloadResult) {
             let filename = file.name.replace(/[<>:"/\\|?*]/g, '_').trim();
 
             // Ensure unique filename
@@ -1875,7 +1875,7 @@
               counter++;
             }
 
-            attachmentsFolder.file(finalFilename, result.blob);
+            attachmentsFolder.file(finalFilename, finalDownloadResult.blob);
             attachmentPaths.push({
               id: file.id,
               name: file.name,
