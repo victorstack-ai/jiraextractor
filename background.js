@@ -10,20 +10,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         'Accept': 'application/json'
       }
     })
-    .then(response => {
-      if (!response.ok) {
-        return response.text().then(text => {
-          throw new Error(`API returned ${response.status}: ${text.substring(0, 100)}`);
-        });
-      }
-      return response.json();
-    })
-    .then(data => {
-      sendResponse({ success: true, data: data });
-    })
-    .catch(error => {
-      sendResponse({ success: false, error: error.message });
-    });
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(`API returned ${response.status}: ${text.substring(0, 100)}`);
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        sendResponse({ success: true, data: data });
+      })
+      .catch(error => {
+        sendResponse({ success: false, error: error.message });
+      });
     return true; // Keep the message channel open for async response
   }
 
@@ -41,39 +41,46 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     });
     return true; // Keep the message channel open for async response
   }
-  
+
   if (request.action === 'downloadFileAsBlob') {
     // For files we need to get as blob for ZIP, we'll fetch in background
-    fetch(request.url, {
-      credentials: 'include',
+    const fetchOptions = {
       mode: 'cors'
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      return response.blob();
-    })
-    .then(blob => {
-      // Convert blob to base64 to send back
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64data = reader.result.split(',')[1];
-        sendResponse({ 
-          success: true, 
-          blob: base64data,
-          type: blob.type,
-          size: blob.size
-        });
-      };
-      reader.onerror = () => {
-        sendResponse({ success: false, error: 'Failed to read blob' });
-      };
-      reader.readAsDataURL(blob);
-    })
-    .catch(error => {
-      sendResponse({ success: false, error: error.message });
-    });
+    };
+
+    if (request.headers) {
+      fetchOptions.headers = request.headers;
+    } else {
+      fetchOptions.credentials = 'include';
+    }
+
+    fetch(request.url, fetchOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        // Convert blob to base64 to send back
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64data = reader.result.split(',')[1];
+          sendResponse({
+            success: true,
+            blob: base64data,
+            type: blob.type,
+            size: blob.size
+          });
+        };
+        reader.onerror = () => {
+          sendResponse({ success: false, error: 'Failed to read blob' });
+        };
+        reader.readAsDataURL(blob);
+      })
+      .catch(error => {
+        sendResponse({ success: false, error: error.message });
+      });
     return true; // Keep the message channel open for async response
   }
 });

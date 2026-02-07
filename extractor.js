@@ -1333,6 +1333,14 @@
         return null;
       }
 
+      // If API auth is enabled, use background script directly to avoid CORS/Header issues in content script
+      if (useApiAuth && apiAuthHeader) {
+        console.log(`Using background script with API auth for: ${filename}`);
+        const bgResult = await downloadFileViaBackgroundBlob(url, filename, apiAuthHeader);
+        if (bgResult) return bgResult;
+        console.log(`Background API auth failed for ${filename}, falling back to browser session`);
+      }
+
       // For Jira attachments, XHR handles cookies and redirects better than fetch
       // Try XHR first for attachment URLs (they often redirect to media.atlassian.com)
       if (url.includes('/secure/attachment/') || url.includes('/attachment/')) {
@@ -1434,6 +1442,44 @@
       // Try background script as fallback
       return await downloadFileViaBackground(url, filename);
     }
+  }
+
+  // Download file via background script using blob (supports API auth headers)
+  async function downloadFileViaBackgroundBlob(url, filename, apiAuthHeader = null) {
+    return new Promise((resolve) => {
+      chrome.runtime.sendMessage({
+        action: 'downloadFileAsBlob',
+        url: url,
+        filename: filename,
+        headers: apiAuthHeader ? { 'Authorization': apiAuthHeader, 'Accept': '*/*' } : null
+      }, (response) => {
+        if (chrome.runtime.lastError) {
+          console.warn(`Background blob download failed for ${filename}:`, chrome.runtime.lastError.message);
+          resolve(null);
+          return;
+        }
+
+        if (response && response.success && response.blob) {
+          try {
+            // Convert base64 back to Blob
+            const byteCharacters = atob(response.blob);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: response.type });
+            resolve({ filename, blob });
+          } catch (e) {
+            console.error(`Failed to process blob for ${filename}:`, e);
+            resolve(null);
+          }
+        } else {
+          console.warn(`Background blob download failed for ${filename}:`, response ? response.error : 'No response');
+          resolve(null);
+        }
+      });
+    });
   }
 
   // Download file using XMLHttpRequest (has better cookie/redirect handling)
