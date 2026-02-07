@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         await chrome.scripting.executeScript({
           target: { tabId: tab.id },
-          files: ['jszip.min.js']
+          files: ['jszip.min.js', 'jira-api.js']
         });
 
         // Wait a moment for JSZip to load
