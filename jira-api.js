@@ -6,7 +6,7 @@ class JiraAPI {
     this.email = email;
     this.apiToken = apiToken;
     this.baseUrl = baseUrl;
-    
+
     // Create base64 encoded credentials for Basic Auth
     const credentials = `${email}:${apiToken}`;
     this.authHeader = `Basic ${btoa(credentials)}`;
@@ -15,7 +15,7 @@ class JiraAPI {
   // Make API request
   async request(endpoint, options = {}) {
     const url = `${this.baseUrl}/rest/api/3${endpoint}`;
-    
+
     const defaultOptions = {
       headers: {
         'Authorization': this.authHeader,
@@ -28,12 +28,12 @@ class JiraAPI {
 
     try {
       const response = await fetch(url, defaultOptions);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Jira API error: ${response.status} ${response.statusText} - ${errorText}`);
       }
-      
+
       return await response.json();
     } catch (error) {
       throw new Error(`Jira API request failed: ${error.message}`);
@@ -48,7 +48,7 @@ class JiraAPI {
       'created', 'updated', 'project', 'issuetype', 'priority',
       'attachment', 'comment'
     ];
-    
+
     const fieldsParam = fields ? fields.join(',') : defaultFields.join(',');
     return await this.request(`/issue/${issueKey}?fields=${fieldsParam}&expand=renderedFields`);
   }
@@ -69,7 +69,7 @@ class JiraAPI {
   async getFullTicket(issueKey) {
     const issue = await this.getIssue(issueKey);
     const comments = await this.getComments(issueKey);
-    
+
     return {
       key: issue.key,
       id: issue.id,
@@ -137,14 +137,14 @@ class JiraAPI {
 // Helper function to clean HTML from Jira's rendered content
 function cleanJiraHtml(html) {
   if (!html) return '';
-  
+
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = html;
-  
+
   // Remove script and style elements
   const scripts = tempDiv.querySelectorAll('script, style');
   scripts.forEach(el => el.remove());
-  
+
   // Process strikethrough elements
   const strikethroughSelectors = [
     '[style*="line-through"]',
@@ -153,7 +153,7 @@ function cleanJiraHtml(html) {
     'strike',
     'del'
   ];
-  
+
   strikethroughSelectors.forEach(selector => {
     const elements = tempDiv.querySelectorAll(selector);
     elements.forEach(el => {
@@ -166,11 +166,11 @@ function cleanJiraHtml(html) {
       }
     });
   });
-  
+
   // Extract text, converting strikethrough markers to <s> tags
   function extractTextWithStrikethrough(node) {
     let result = '';
-    
+
     for (const child of node.childNodes) {
       if (child.nodeType === Node.TEXT_NODE) {
         result += child.textContent;
@@ -182,15 +182,15 @@ function cleanJiraHtml(html) {
         }
       }
     }
-    
+
     return result;
   }
-  
+
   let text = extractTextWithStrikethrough(tempDiv);
-  
+
   // Clean up whitespace but preserve <s> tags
   text = text.replace(/\s+/g, ' ').trim();
-  
+
   return text;
 }
 
@@ -218,7 +218,7 @@ function convertApiDataToExtractorFormat(apiData, baseUrl) {
       let url = att.content || '';
       const attachmentId = att.id || '';
       const filename = att.filename || `attachment-${attachmentId}`;
-      
+
       // Always construct browser-session URL for better compatibility
       if (attachmentId) {
         url = `${baseUrl}/secure/attachment/${attachmentId}/${encodeURIComponent(filename)}`;
@@ -230,14 +230,17 @@ function convertApiDataToExtractorFormat(apiData, baseUrl) {
           url = `${baseUrl}/secure/attachment/${extractedId}/${encodeURIComponent(filename)}`;
         }
       }
-      
+
       return {
         id: idx + 1,
         name: att.filename || `attachment-${idx + 1}`,
         url: url,
         size: att.size || 0,
         mimeType: att.mimeType || '',
-        attachmentId: att.id // Store original ID for reference
+        size: att.size || 0,
+        mimeType: att.mimeType || '',
+        attachmentId: att.id, // Store original ID for reference
+        apiUrl: att.content // Store original API URL for authenticated downloads
       };
     })
   };
