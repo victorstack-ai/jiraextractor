@@ -1,6 +1,8 @@
 # Jira Ticket Extractor Chrome Extension
 
-A Chrome extension that extracts Jira tickets to clean JSON format with all attachments and images.
+**Install from Chrome Web Store:** https://chromewebstore.google.com/detail/mjdgnpmadepahnoeiahafimajgoajgdp
+
+A Chrome extension that extracts Jira tickets to clean JSON format with all attachments and images. Version 1.0.8, 65.2 KiB, privacy-first (no data collection).
 
 ## Features
 
